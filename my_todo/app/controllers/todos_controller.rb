@@ -11,10 +11,23 @@ class TodosController < ApplicationController
     @todo.beschrijving = params[:beschrijving]
     @todo.status = params[:status]
     @todo.save
+
+    @db = CouchRest.database(ENV['DB'])
+    @doc = @todo
+    @db.save_doc(doc)
   end
 
   def show
+    self.filter
+  end
 
+  def filter
+    @todos_prioriteit
+    Todo.each do |todo|
+      if todo[:prioriteit] = params[:prioriteit]
+        @todos_prioriteit += todo
+      end
+    end
   end
 
 end
